@@ -27,7 +27,7 @@ const MessageLog: React.FC = () => {
   }, []);
 
   const columns: GridColDef[] = [
-    { field: 'timestamp', headerName: 'Time', width: 200, valueFormatter: (params) => new Date(params.value).toLocaleString() },
+    { field: 'timestamp', headerName: 'Time', width: 200, valueFormatter: (value: any) => value ? new Date(value).toLocaleString() : '' },
     { field: 'to', headerName: 'Recipient', width: 150 },
     { field: 'type', headerName: 'Type', width: 100 },
     { field: 'content', headerName: 'Message Preview', width: 300 },

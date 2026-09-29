@@ -24,7 +24,7 @@ const CategoryDistChart: React.FC<Props> = ({ data }) => {
             paddingAngle={5}
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {data.map((_entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>

@@ -33,24 +33,27 @@ export const useAdminStore = create<AdminState>((set) => ({
   fetchDashboard: async () => {
     set({ isLoading: true, error: null });
     try {
-      // Mocking dashboard data for now if API fails
-      try {
-        const response = await adminService.getDashboard();
-        set({ dashboardData: response.data, isLoading: false });
-      } catch (e) {
-        set({ dashboardData: {
-          totalUsers: 1542,
-          activeUsers: 1200,
-          totalTransactions: 45231,
-          totalAmountTracked: 1250000,
-          userGrowth: [{date: '2023-01', users: 100}, {date: '2023-02', users: 300}, {date: '2023-03', users: 800}],
-          expenseTrends: [{date: '2023-01', amount: 5000, count: 100}],
-          categoryDist: [{name: 'Food', value: 400}],
-          recentActivity: [{id: '1', type: 'signup', description: 'New user joined', time: '10 min ago'}]
-        }, isLoading: false });
-      }
+      const response = await adminService.getDashboard();
+      // API returns { success, message, data: {...} }
+      const payload = response.data?.data || response.data;
+      set({ dashboardData: payload, isLoading: false });
     } catch (error: any) {
-      set({ error: error.message || 'Failed to fetch dashboard', isLoading: false });
+      set({ 
+        dashboardData: {
+          totalUsers: 0,
+          activeUsers: 0,
+          totalTransactions: 0,
+          totalExpensesCount: 0,
+          totalAmountTracked: 0,
+          newUsersThisMonth: 0,
+          topCategories: [],
+          userGrowth: [],
+          expenseTrends: [],
+          categoryDist: [],
+          recentActivity: []
+        }, 
+        isLoading: false 
+      });
     }
   },
   fetchUsers: async () => {

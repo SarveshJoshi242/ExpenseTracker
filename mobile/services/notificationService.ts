@@ -50,10 +50,10 @@ export const notificationService = {
         body: 'Don\'t forget to log your expenses today!',
       },
       trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DAILY,
         hour: 20,
         minute: 0,
-        repeats: true,
-      } as Notifications.DailyTriggerInput,
+      } as any,
     });
   }
 };

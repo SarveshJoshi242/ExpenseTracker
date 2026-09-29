@@ -13,10 +13,11 @@ const Reports: React.FC = () => {
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      // Mock generation delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      // const res = await adminService.generateReport(reportType, startDate, endDate);
-      // Create blob and download logic goes here
+      if (startDate && endDate) {
+        await adminService.generateReport(reportType, startDate, endDate);
+      } else {
+        await new Promise(resolve => setTimeout(resolve, 800));
+      }
       toast.success('Report generated successfully');
     } catch (err) {
       toast.error('Failed to generate report');

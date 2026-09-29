@@ -13,7 +13,7 @@ interface AnimatedCardProps {
   children: React.ReactNode;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
-  colors?: string[];
+  colors?: readonly [string, string, ...string[]];
 }
 
 export const AnimatedCard: React.FC<AnimatedCardProps> = ({
@@ -51,8 +51,7 @@ export const AnimatedCard: React.FC<AnimatedCardProps> = ({
       {colors ? (
         <LinearGradient
           colors={colors}
-          style={StyleSheet.absoluteFillObject}
-          borderRadius={16}
+          style={[StyleSheet.absoluteFillObject, { borderRadius: 16 }]}
         />
       ) : null}
       {children}

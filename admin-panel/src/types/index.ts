@@ -20,14 +20,17 @@ export interface Expense {
 }
 
 export interface DashboardStats {
-  totalUsers: number;
-  activeUsers: number;
-  totalTransactions: number;
-  totalAmountTracked: number;
-  userGrowth: { date: string; users: number }[];
-  expenseTrends: { date: string; amount: number; count: number }[];
-  categoryDist: { name: string; value: number }[];
-  recentActivity: { id: string; type: string; description: string; time: string }[];
+  totalUsers?: number;
+  activeUsers?: number;
+  totalTransactions?: number;
+  totalExpensesCount?: number;
+  totalAmountTracked?: number;
+  newUsersThisMonth?: number;
+  topCategories?: { name: string; total: number }[];
+  userGrowth?: { date: string; users: number }[];
+  expenseTrends?: { date: string; amount: number; count: number }[];
+  categoryDist?: { name: string; value: number }[];
+  recentActivity?: { id: string; type: string; description: string; time: string }[];
 }
 
 export interface AuditLog {

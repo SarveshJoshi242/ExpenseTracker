@@ -4,31 +4,32 @@
     "slug": "expense-tracker",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./assets/images/icon.png",
     "scheme": "expensetracker",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#4F46E5"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.expensetracker.app"
     },
     "android": {
+      "package": "com.expensetracker.app",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#4F46E5"
       }
     },
     "web": {
-      "bundler": "metro",
-      "favicon": "./assets/images/favicon.png"
+      "bundler": "metro"
     },
     "plugins": [
       "expo-router",
       "expo-font",
-      "react-native-reanimated/plugin"
-    ]
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }

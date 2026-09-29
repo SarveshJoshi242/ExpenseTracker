@@ -44,6 +44,17 @@ const Dashboard: React.FC = () => {
     );
   }
 
+  // Safe access with fallbacks — API returns data nested in response.data.data
+  const totalUsers = dashboardData.totalUsers ?? 0;
+  const activeUsers = dashboardData.activeUsers ?? dashboardData.newUsersThisMonth ?? 0;
+  const totalTransactions = dashboardData.totalTransactions ?? dashboardData.totalExpensesCount ?? 0;
+  const totalAmountTracked = dashboardData.totalAmountTracked ?? 0;
+  const userGrowth = dashboardData.userGrowth ?? [];
+  const expenseTrends = dashboardData.expenseTrends ?? [];
+  const topCategories = dashboardData.topCategories ?? [];
+  const categoryDist = dashboardData.categoryDist ?? topCategories.map((c: any) => ({ name: c.name, value: c.total }));
+  const recentActivity = dashboardData.recentActivity ?? [];
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Typography variant="h4" gutterBottom>Dashboard</Typography>
@@ -52,15 +63,15 @@ const Dashboard: React.FC = () => {
         <Grid item xs={12} sm={6} md={3}>
           <StatCard 
             title="Total Users" 
-            value={dashboardData.totalUsers.toLocaleString()} 
+            value={totalUsers.toLocaleString()} 
             icon={<PeopleIcon htmlColor="#fff" />} 
             color="primary"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard 
-            title="Active Users" 
-            value={dashboardData.activeUsers.toLocaleString()} 
+            title="New This Month" 
+            value={activeUsers.toLocaleString()} 
             icon={<PersonPinIcon htmlColor="#fff" />} 
             color="success"
           />
@@ -68,15 +79,15 @@ const Dashboard: React.FC = () => {
         <Grid item xs={12} sm={6} md={3}>
           <StatCard 
             title="Total Transactions" 
-            value={dashboardData.totalTransactions.toLocaleString()} 
+            value={totalTransactions.toLocaleString()} 
             icon={<ReceiptIcon htmlColor="#fff" />} 
             color="secondary"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <StatCard 
-            title="Total Amount Tracked" 
-            value={`$${(dashboardData.totalAmountTracked / 1000).toFixed(1)}k`} 
+            title="Amount Tracked" 
+            value={`₹${totalAmountTracked.toLocaleString()}`} 
             icon={<AttachMoneyIcon htmlColor="#fff" />} 
             color="warning"
           />
@@ -85,34 +96,57 @@ const Dashboard: React.FC = () => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} lg={8}>
-          <Card sx={{ mb: 3 }}>
-            <CardContent>
-              <UserGrowthChart data={dashboardData.userGrowth} />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent>
-              <ExpenseTrendsChart data={dashboardData.expenseTrends} />
-            </CardContent>
-          </Card>
+          {userGrowth.length > 0 && (
+            <Card sx={{ mb: 3 }}>
+              <CardContent>
+                <UserGrowthChart data={userGrowth} />
+              </CardContent>
+            </Card>
+          )}
+          {expenseTrends.length > 0 && (
+            <Card>
+              <CardContent>
+                <ExpenseTrendsChart data={expenseTrends} />
+              </CardContent>
+            </Card>
+          )}
+          {userGrowth.length === 0 && expenseTrends.length === 0 && (
+            <Card sx={{ mb: 3 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>Analytics</Typography>
+                <Typography color="text.secondary">
+                  Charts will appear here as users start adding expenses.
+                </Typography>
+              </CardContent>
+            </Card>
+          )}
         </Grid>
         <Grid item xs={12} lg={4}>
           <Card sx={{ mb: 3 }}>
             <CardContent>
-              <CategoryDistChart data={dashboardData.categoryDist} />
+              <Typography variant="h6" gutterBottom>Top Categories</Typography>
+              {categoryDist.length > 0 ? (
+                <CategoryDistChart data={categoryDist} />
+              ) : (
+                <Typography color="text.secondary">No category data yet.</Typography>
+              )}
             </CardContent>
           </Card>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>Recent Activity</Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                {dashboardData.recentActivity.map((activity) => (
-                  <Box key={activity.id} sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="body2">{activity.description}</Typography>
-                    <Typography variant="caption" color="text.secondary">{activity.time}</Typography>
-                  </Box>
-                ))}
-              </Box>
+              {recentActivity.length > 0 ? (
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {recentActivity.map((activity: any, index: number) => (
+                    <Box key={activity.id || index} sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography variant="body2">{activity.description}</Typography>
+                      <Typography variant="caption" color="text.secondary">{activity.time}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              ) : (
+                <Typography color="text.secondary">No recent activity yet.</Typography>
+              )}
             </CardContent>
           </Card>
         </Grid>

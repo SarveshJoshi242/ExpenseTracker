@@ -14,7 +14,7 @@ interface GradientButtonProps {
   onPress: () => void;
   isLoading?: boolean;
   disabled?: boolean;
-  colors?: string[];
+  colors?: readonly [string, string, ...string[]];
   style?: ViewStyle;
   textStyle?: TextStyle;
 }
@@ -33,7 +33,7 @@ export const GradientButton: React.FC<GradientButtonProps> = ({
   
   const scale = useSharedValue(1);
   
-  const defaultColors = [theme.primary, theme.secondary];
+  const defaultColors: readonly [string, string, ...string[]] = [theme.primary, theme.secondary];
   const activeColors = colors || defaultColors;
 
   const animatedStyle = useAnimatedStyle(() => ({

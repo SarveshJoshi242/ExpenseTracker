@@ -16,18 +16,17 @@ const Login: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Mock login for now or call real API
-      if (email === 'admin@example.com' && password === 'admin123') {
-        login('fake-jwt-token');
-        navigate('/dashboard');
-        toast.success('Login successful');
-      } else {
-        const response = await api.post('/admin/login', { email, password });
-        login(response.data.token);
-        navigate('/dashboard');
+      const response = await api.post('/auth/login', { email, password });
+      const { token, user } = response.data.data || response.data;
+      if (user?.role !== 'admin') {
+        toast.error('Access denied. Admin credentials required.');
+        return;
       }
-    } catch (error) {
-      toast.error('Invalid credentials');
+      login(token);
+      navigate('/dashboard');
+      toast.success('Login successful');
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Invalid credentials');
     } finally {
       setLoading(false);
     }

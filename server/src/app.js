@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 app.use('/api', apiLimiter);
 
 // API Routes
-app.use('/api/v1', routes);
+app.use('/api', routes);
 
 // 404 handler
 app.use((req, res, next) => {

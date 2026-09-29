@@ -31,6 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
       variant="persistent"
       anchor="left"
       open={open}
+      onClose={onClose}
       sx={{
         width: open ? 240 : 0,
         flexShrink: 0,
